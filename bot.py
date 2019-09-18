@@ -18,4 +18,4 @@ class CustomClient(discord.Client):
                 await client.send_message(after, "gratz")
 
 client = CustomClient()
-client.run('NjIxNzg2NzU5MTg4OTcxNTIw.XYFJEg.AdCmCMvcKpkZkWKFj0qJYUUC-ko')
+client.run('NjIxNzg2NzU5MTg4OTcxNTIw.XYGLYQ.k-neoGw12zugM6_83cSQEP4UUXc')
