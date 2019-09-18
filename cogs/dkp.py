@@ -20,19 +20,17 @@ class Dkp(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def givedkp(self, ctx, player:str, amount:int):
-        print(str(player))
         recipient = self.players.find_player(player)
         recipient.dkp += amount
-        ##self.players.save_players()
+        self.players.save_players()
         await ctx.send('<@'+str(ctx.author.id)+'> gave '+recipient.id+' '+str(amount)+' DKP')
         
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def setdkp(self, ctx, player:str, amount:int):
-        print(str(player))
         recipient = self.players.find_player(player)
         recipient.dkp = amount
-        ##self.players.save_players()
+        self.players.save_players()
         await ctx.send('<@'+str(ctx.author.id)+'> set '+recipient.id+'\'s DKP to '+str(amount))
         
     @commands.command()
@@ -43,6 +41,7 @@ class Dkp(commands.Cog):
         saving = True
         
         if not self.players.players:
+            print('char created from empty list')
             self.players.add_player(new_id,new_name)
             await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
         
@@ -56,13 +55,18 @@ class Dkp(commands.Cog):
             await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
             
     @commands.command()
-    async def list(self, ctx):
-        list.players(self)
-        
-    @commands.command()
     @commands.has_permissions(administrator=True)
-    async def logout(self, ctx):
-        await bot.logout()
+    async def list(self, ctx):
+        for player in self.players.players:
+            print(str(player.name)+str(player.dkp))
+            
+    @commands.command()
+    async def bal(self, ctx):
+        player = self.players.find_player(ctx.author.id)
+        if player is not False:
+            await ctx.send('<@'+str(ctx.author.id)+'> has '+str(player.dkp)+' DKP.')
+        else:
+            print('Error finding player')
         
 def setup(bot):
     bot.add_cog(Dkp(bot))
