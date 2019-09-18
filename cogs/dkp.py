@@ -15,34 +15,54 @@ class Dkp(commands.Cog):
         while True:
             print('Updating players')
             self.players.players = self.players.load_players()
-            await asyncio.sleep(120)
+            await asyncio.sleep(300)
         
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def givedkp(self, ctx, user:str, amount:int):
+    async def givedkp(self, ctx, player:str, amount:int):
         print(str(player))
         recipient = self.players.find_player(player)
         recipient.dkp += amount
-        self.players.save_players()
+        ##self.players.save_players()
         await ctx.send('<@'+str(ctx.author.id)+'> gave '+recipient.id+' '+str(amount)+' DKP')
         
     @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def setdkp(self, ctx, player:str, amount:int):
+        print(str(player))
+        recipient = self.players.find_player(player)
+        recipient.dkp = amount
+        ##self.players.save_players()
+        await ctx.send('<@'+str(ctx.author.id)+'> set '+recipient.id+'\'s DKP to '+str(amount))
+        
+    @commands.command()
     async def new(self, ctx):
-        player_id = '<@'+str(ctx.author.id)+'>'
-        player_name = str(ctx.author)
+        new_id = '<@'+str(ctx.author.id)+'>'
+        new_name = str(ctx.author)
         
         saving = True
-        updating = False
+        
+        if not self.players.players:
+            self.players.add_player(new_id,new_name)
+            await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
         
         for player in self.players.players:
-            if player.id == player_id:
-                await ctx.send('<@'+str(ctx.author.id)+'> You\'ve already signed up for DKP')
+            if player.id == new_id:
+                await ctx.send('<@'+str(ctx.author.id)+'> You\'re not new! Character exists.')
                 saving = False
-                updating = True
-
+                
         if saving:
-            self.players.add_player(player_id, player_name)
-            await ctx.send('<@'+str(ctx.author.id)+'> You\'ve successfully signed up for DKP')
+            self.players.add_player(new_id,new_name)
+            await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
+            
+    @commands.command()
+    async def list(self, ctx):
+        list.players(self)
+        
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def logout(self, ctx):
+        await bot.logout()
         
 def setup(bot):
     bot.add_cog(Dkp(bot))
