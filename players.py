@@ -11,7 +11,7 @@ class Players:
                 players = json.load(f)
                 result = []
                 for player in players:
-                    loaded_player = Player(player['id'],player['name'],player['nick'],player['dkp'])
+                    loaded_player = Player(player['id'],player['name'],player['nick'],player['channel'],player['dkp'])
                     result.append(loaded_player)
                 print('Loaded successfully')
                 return result
@@ -34,16 +34,14 @@ class Players:
         return self
         
     def find_player(self,id):
+        print(id)
         if  (isinstance(id, str)) and (id[2] == '!'):
-            print(id)
             id = id[:2]+id[3:]
         elif (isinstance(id, str)):
             id = id
         else:
-            print(str(id))
             id = ('<@'+str(id)+'>')
         for player in self.players:
-            print(player.id+id)
             if player.id == id:
                 return player
         return False
