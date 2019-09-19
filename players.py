@@ -11,7 +11,7 @@ class Players:
                 players = json.load(f)
                 result = []
                 for player in players:
-                    loaded_player = Player(player['id'],player['name'],player['dkp'])
+                    loaded_player = Player(player['id'],player['name'],player['nick'],player['dkp'])
                     result.append(loaded_player)
                 print('Loaded successfully')
                 return result
@@ -27,17 +27,21 @@ class Players:
             if nplayers != []:
                 json.dump(nplayers,f)
     
-    def add_player(self,id,name,dkp=0):
-        new_player = Player(id,name,dkp)
+    def add_player(self,id,name,nick,channel,dkp=0):
+        new_player = Player(id,name,nick,channel,dkp)
         self.players.append(new_player)
         self.save_players()
         return self
         
     def find_player(self,id):
-        if isinstance(id, str):
+        if  (isinstance(id, str)) and (id[2] == '!'):
+            print(id)
             id = id[:2]+id[3:]
+        elif (isinstance(id, str)):
+            id = id
         else:
-            id = str(id) ###HERE
+            print(str(id))
+            id = ('<@'+str(id)+'>')
         for player in self.players:
             print(player.id+id)
             if player.id == id:
