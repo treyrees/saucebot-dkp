@@ -23,7 +23,8 @@ async def load(ctx, extension):
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
-    
+   
+#logout   
 @client.command()
 async def logout(ctx):
     await client.logout()
@@ -33,4 +34,4 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
     
-client.run('NjIxNzg2NzU5MTg4OTcxaNTIasdw.XYLGSA.I8lGpJBlQUFCVmdAJ6MlFIdqKv4')
+client.run('NjIxNzg2NzU5MTg4OTcxNTIw.XYOz9A.4zqj6dK0cn9iCmWLQxf3dZaAEl8')

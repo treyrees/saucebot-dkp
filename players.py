@@ -34,7 +34,6 @@ class Players:
         return self
         
     def find_player(self,id):
-        print(id)
         if  (isinstance(id, str)) and (id[2] == '!'):
             id = id[:2]+id[3:]
         elif (isinstance(id, str)):

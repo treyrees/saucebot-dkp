@@ -9,7 +9,7 @@ class Example(commands.Cog):
     #event
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Cog is online')
+        print('Example is online')
         
     #command
     @commands.command()

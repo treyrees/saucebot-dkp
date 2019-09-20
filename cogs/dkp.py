@@ -13,9 +13,9 @@ class Dkp(commands.Cog):
     async def auto_load(self):
         await self.bot.wait_until_ready()
         while True:
-            print('Updating players')
+            print('Dkp updating players')
             self.players.players = self.players.load_players()
-            await asyncio.sleep(30)
+            await asyncio.sleep(60)
         
     #give, set, take, kill
     @commands.command()
@@ -52,6 +52,21 @@ class Dkp(commands.Cog):
         await ctx.send('<@'+str(ctx.author.id)+'> gave everyone in '+str(leader_channel)+' '+str(amount)+' DKP')
         self.players.save_players()
         
+    #prekill
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def prekill(self, ctx):
+        leader_channel = ctx.message.author.voice.channel
+        unadded = []
+        unadded_message = ('')
+        for player in leader_channel.members:
+            found_player = self.players.find_player(player.id)
+            if (found_player == False):
+                unadded.append(player.id)
+        for id in unadded:
+            unadded_message = unadded_message+'<@'+str(id)+'> '
+        await ctx.send(unadded_message+'You\'re not in the database! Please go to <#623720839296188445> and type `$new`.')
+        
     #new player
     @commands.command()
     async def new(self, ctx):
@@ -82,7 +97,6 @@ class Dkp(commands.Cog):
     async def roster(self, ctx):
         embed = discord.Embed(
             title = 'Roster',
-            description = 'List of DKP for each raider',
             color = discord.Color.from_rgb(13, 82, 92),
         )
         
