@@ -15,7 +15,7 @@ class Dkp(commands.Cog):
         while True:
             print('Dkp updating players')
             self.players.players = self.players.load_players()
-            await asyncio.sleep(60)
+            await asyncio.sleep(300)
         
     #give, set, take, kill
     @commands.command()

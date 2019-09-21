@@ -15,23 +15,40 @@ class Drop(commands.Cog):
         while True:
             print('Drop updating players')
             self.players.players = self.players.load_players()
-            await asyncio.sleep(60)
+            await asyncio.sleep(300)
             
     #begin event
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def drop(self, ctx, drops:str):
-        split_drops = drops.split(',')
+        countdown = 10
+    
+        #embed creation
+        split_drops = drops[1:-1].split('][')
         embed=discord.Embed(
-            title = 'Drop IDs',
-            color = discord.Color.from_rgb(13, 82, 92),
-            description = '$bid {id} {dkp}'
+            title = 'Bid now!',
+            color = discord.Color.green(),
+            description = 'Item IDs'
         )
         embed.add_field(name='1', value=split_drops[0], inline=True)
-        embed.add_field(name='Time Remaining', value='xxx', inline=True)
+        embed.add_field(name='Time Remaining', value='~'+str(countdown), inline=True)
+        embed.set_footer(text='Command: $bid itemId dkpValue', icon_url='http://i.imgur.com/IPEOEew.png')
         for x in range(len(split_drops) - 1):
             embed.add_field(name=str(x+2), value=split_drops[x+1], inline=False)
-        await ctx.send(embed=embed)
+        message = await ctx.send(embed=embed)
+        
+        #increment countdown
+        while countdown > 0:
+            countdown -= 1
+            embed.set_field_at(1, name='Time Remaining', value='~'+str(countdown), inline=True)
+            await message.edit(embed=embed)
+            await asyncio.sleep(1)
+            
+        #finish countdown
+        embed.color = discord.Color.red()
+        embed.title = 'Bidding closed!'
+        await message.edit(embed=embed)
+        await ctx.send('Bidding closed!', tts=True)
         
 def setup(bot):
     bot.add_cog(Drop(bot))
