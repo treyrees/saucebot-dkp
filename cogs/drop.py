@@ -20,7 +20,6 @@ class Drop(commands.Cog):
     embed  = discord.Embed()
     countdown = 0
     highest_bids = []
-    second_highest = []
     split_drops = []
             
     #begin event
@@ -30,11 +29,9 @@ class Drop(commands.Cog):
         global embed
         global countdown
         global highest_bids
-        global second_highest
         global split_drops
         countdown = 30
         highest_bids = []
-        second_highest = []
         split_drops = []
         
         #highest initialization
