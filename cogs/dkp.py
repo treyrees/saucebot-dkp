@@ -15,7 +15,7 @@ class Dkp(commands.Cog):
         while True:
             print('Dkp updating players')
             self.players.players = self.players.load_players()
-            await asyncio.sleep(300)
+            await asyncio.sleep(30)
         
     #give, set, take, kill
     @commands.command()
@@ -65,21 +65,23 @@ class Dkp(commands.Cog):
                 unadded.append(player.id)
         for id in unadded:
             unadded_message = unadded_message+'<@'+str(id)+'> '
-        await ctx.send(unadded_message+'You\'re not in the database! Please go to <#623720839296188445> and type `$new`.')
+        if unadded == []:
+            await ctx.send('All players in '+str(leader_channel)+' are in the database.')
+        else:
+            await ctx.send(unadded_message+'You\'re not in the database! Please go to <#623720839296188445> and type `$new`.')
         
-    #new player
+    #new player, new roster
     @commands.command()
     async def new(self, ctx):
         new_id = '<@'+str(ctx.author.id)+'>'
         new_name = str(ctx.author)
         new_nick = str(ctx.author.display_name)
-        new_channel = str(ctx.author.voice.channel)
         
         saving = True
         
         if not self.players.players:
             print('char created from empty list')
-            self.players.add_player(new_id,new_name,new_nick,new_channel)
+            self.players.add_player(new_id,new_name,new_nick)
             await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
         
         for player in self.players.players:
@@ -88,7 +90,7 @@ class Dkp(commands.Cog):
                 saving = False
                 
         if saving:
-            self.players.add_player(new_id,new_name,new_nick,new_channel)
+            self.players.add_player(new_id,new_name,new_nick)
             await ctx.send('<@'+str(ctx.author.id)+'> Thank you! Character created.')
             
     #roster, balance
