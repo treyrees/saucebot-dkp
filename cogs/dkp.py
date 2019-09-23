@@ -38,7 +38,7 @@ class Dkp(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def take(self, ctx, player:str, amount:int):
         recipient = self.players.find_player(player)
-        recipient.dkp = amount
+        recipient.dkp -= amount
         self.players.save_players()
         await ctx.send('<@'+str(ctx.author.id)+'> took '+recipient.id+' '+str(amount)+' DKP')
         
